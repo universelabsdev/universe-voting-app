@@ -1,0 +1,6 @@
+{
+  "name": "UniVerse Voting App",
+  "description": "A high-performance, visually stunning standalone Voting Web Application with a Deep Dark Glassmorphism aesthetic. Connects to backend via REST API, authenticated with Clerk, and listens to live votes via Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
