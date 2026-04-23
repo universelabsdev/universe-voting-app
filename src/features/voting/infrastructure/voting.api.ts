@@ -12,10 +12,10 @@ import {
 export const VotingApi = {
   // Check if voter is registered
   checkRegistration: async (): Promise<boolean> => {
-    const { data } = await apiClient.get<{ success: boolean; data: { registered: boolean } }>(
+    const { data } = await apiClient.get<{ success: boolean; data: { isRegistered: boolean } }>(
       '/elections/registration'
     );
-    return data.data.registered;
+    return data.data.isRegistered;
   },
 
   // Register Voter
@@ -40,12 +40,22 @@ export const VotingApi = {
         data: { elections: Election[]; total: number; page: number; limit: number } 
       }>(url);
       
-      // Map positions if needed and ensure candidates array exists
-      const elections = response.data.data.elections.map(el => ({
-        ...el,
-        candidates: el.candidates || (el.positions && el.positions[0]?.candidates) || []
-      }));
-      
+      const elections = response.data.data.elections.map(el => {
+        // Normalise status: server returns CLOSED/COMPLETED, frontend only knows PAST
+        const rawStatus = (el.status as string) || '';
+        const normalisedStatus =
+          rawStatus === 'CLOSED' || rawStatus === 'COMPLETED' ? 'PAST' : rawStatus;
+
+        return {
+          ...el,
+          status: normalisedStatus as Election['status'],
+          // Map server date field names to the frontend field names
+          startTime: el.startTime ?? (el as any).startDate,
+          endTime: el.endTime ?? (el as any).endDate,
+          candidates: el.candidates || (el.positions && el.positions[0]?.candidates) || [],
+        };
+      });
+
       return elections;
     } catch (error) {
       console.error('API: Error fetching elections:', error);
@@ -56,11 +66,18 @@ export const VotingApi = {
   // Get Election Details
   getElectionDetails: async (id: string): Promise<Election> => {
     const { data } = await apiClient.get<{ success: boolean; data: Election }>(`/elections/${id}`);
-    const election = data.data;
-    // Ensure candidates array is populated from positions if missing
-    if ((!election.candidates || election.candidates.length === 0) && election.positions?.length > 0) {
-      election.candidates = election.positions[0].candidates;
-    }
+    const raw = data.data;
+    const rawStatus = (raw.status as string) || '';
+    const election: Election = {
+      ...raw,
+      status: (rawStatus === 'CLOSED' || rawStatus === 'COMPLETED' ? 'PAST' : rawStatus) as Election['status'],
+      startTime: raw.startTime ?? (raw as any).startDate,
+      endTime: raw.endTime ?? (raw as any).endDate,
+      candidates:
+        raw.candidates?.length
+          ? raw.candidates
+          : (raw.positions?.[0]?.candidates ?? []),
+    };
     return election;
   },
 

@@ -1,4 +1,4 @@
-export type ElectionStatus = "ACTIVE" | "UPCOMING" | "PAST";
+export type ElectionStatus = "ACTIVE" | "UPCOMING" | "PAST" | "CLOSED" | "COMPLETED";
 
 export interface Candidate {
   id: string;
@@ -32,6 +32,9 @@ export interface Election {
   positions: Position[]; // The backend uses positions
   endTime?: string;
   startTime?: string;
+  /** Server aliases — prefer startTime/endTime after normalisation */
+  startDate?: string;
+  endDate?: string;
   totalEligibleVoters?: number;
 }
 
