@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsx esbuild.ts || true",
+    "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "eslint .",
