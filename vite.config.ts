@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
       hmr: process.env.DISABLE_HMR !== 'true',
       proxy: {
         '/api/v1': {
-          target: 'https://universe-server-delta.vercel.app',
+          target: 'https://www.universelabs.cloud',
           changeOrigin: true,
         },
       },

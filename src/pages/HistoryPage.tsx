@@ -2,10 +2,8 @@ import React, { useState, useRef } from "react";
 import { useVoting } from "../features/voting/application/useVoting";
 import { Receipt, Calendar, ExternalLink, Download, Search, CheckCircle, XCircle } from "lucide-react";
 import html2canvas from "html2canvas";
-import { useApiClient } from "../api/client";
 
 export default function HistoryPage() {
-  useApiClient();
   const { useMyHistory, useVerifyVote } = useVoting();
   const { data: history, isLoading } = useMyHistory();
   const verifyVote = useVerifyVote();

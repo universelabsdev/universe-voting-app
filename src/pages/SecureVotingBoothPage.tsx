@@ -5,10 +5,8 @@ import { generateVoterHash } from "../features/voting/application/voterHash";
 import { useUser } from "@clerk/clerk-react";
 import { CheckCircle, AlertTriangle, ShieldCheck, ArrowRight, Loader2, Award, Share2, Info, X } from "lucide-react";
 import Markdown from 'react-markdown';
-import { useApiClient } from "../api/client";
 
 export default function SecureVotingBoothPage() {
-  useApiClient();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { useElectionDetails, useEligibility, useSubmitVote, usePostFeed } = useVoting();

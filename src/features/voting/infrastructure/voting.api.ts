@@ -26,7 +26,7 @@ export const VotingApi = {
   // Get User Profile
   getUserProfile: async (): Promise<UserProfile> => {
     const { data } = await apiClient.get<{ success: boolean; data: UserProfile }>(
-      '/users/me/profile'
+      '/users/me'
     );
     return data.data;
   },
@@ -148,26 +148,65 @@ export const VotingApi = {
 
   // Verify Vote Confirmation Code
   verifyVote: async (confirmationCode: string): Promise<{ valid: boolean; timestamp?: string }> => {
-    const { data } = await apiClient.post<{ success: boolean; data: { valid: boolean; timestamp?: string } }>(
-      '/votes/verify',
-      { confirmationCode }
-    );
-    return data.data;
+    const { data } = await apiClient.post<{
+      success: boolean;
+      data: { valid: boolean; submittedAt?: string; timestamp?: string };
+    }>('/votes/verify', { confirmationCode });
+    const d = data.data;
+    return { valid: d.valid, timestamp: d.timestamp ?? d.submittedAt };
   },
 
-  // Get Feed
+  // Get Feed — maps the social posts feed into the FeedPost shape
   getFeed: async (): Promise<FeedPost[]> => {
-    const { data } = await apiClient.get<{ success: boolean; data: FeedPost[] }>('/posts/feed');
-    return data.data;
+    const { data } = await apiClient.get<{
+      success: boolean;
+      data: Array<{
+        id: string;
+        author?: { id?: string; name?: string; avatar?: string };
+        content?: string;
+        type?: string;
+        createdAt?: string;
+        created_at?: string;
+      }>;
+    }>('/posts/feed');
+    const posts = Array.isArray(data.data) ? data.data : [];
+    return posts.map(p => ({
+      id: p.id,
+      authorId: p.author?.id ?? '',
+      authorName: p.author?.name ?? undefined,
+      authorImageUrl: p.author?.avatar ?? undefined,
+      content: p.content ?? '',
+      type: p.type ?? 'TEXT',
+      createdAt: p.createdAt ?? p.created_at ?? new Date().toISOString(),
+    }));
   },
 
-  // Post to Feed
+  // Post to Feed — creates a public text post
   postFeed: async (params: {
     content: string;
     authorName?: string;
     authorImageUrl?: string;
   }): Promise<FeedPost> => {
-    const { data } = await apiClient.post<{ success: boolean; data: FeedPost }>('/posts/feed', params);
-    return data.data;
+    const { data } = await apiClient.post<{ success: boolean; data: {
+      id: string;
+      author?: { id?: string; name?: string; avatar?: string };
+      content?: string;
+      type?: string;
+      createdAt?: string;
+    } }>('/posts', {
+      content: params.content,
+      type: 'TEXT',
+      visibility: 'PUBLIC',
+    });
+    const p = data.data;
+    return {
+      id: p.id,
+      authorId: p.author?.id ?? '',
+      authorName: params.authorName ?? p.author?.name,
+      authorImageUrl: params.authorImageUrl ?? p.author?.avatar,
+      content: p.content ?? params.content,
+      type: p.type ?? 'TEXT',
+      createdAt: p.createdAt ?? new Date().toISOString(),
+    };
   },
 };

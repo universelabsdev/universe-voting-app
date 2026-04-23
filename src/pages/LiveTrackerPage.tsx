@@ -4,10 +4,8 @@ import { useVoting } from "../features/voting/application/useVoting";
 import { useLiveVotesSubscription } from "../features/voting/infrastructure/useLiveVotes";
 import { Loader2, Users } from "lucide-react";
 import { LiveChat } from "../features/chat/LiveChat";
-import { useApiClient } from "../api/client";
 
 export default function LiveTrackerPage() {
-  useApiClient();
   const { id } = useParams<{ id: string }>();
   const { useElectionDetails, useLiveResults } = useVoting();
   
