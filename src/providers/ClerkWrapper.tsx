@@ -40,15 +40,8 @@ function SignInWithAccountSwitchInfo() {
 
         {/* Toggle switch account info */}
         <button
+          type="button"
           onClick={() => setShowSwitchAccountInfo(!showSwitchAccountInfo)}
-          className="w-full text-center text-xs text-[#94a3b8] hover:text-[#34d399] py-2 border-t border-white/10 transition-colors"
-        >
-          {showSwitchAccountInfo ? "Hide" : "Can't sign in with Cavendish account?"}
-        </button>
-      </div>
-    </div>
-  );
-}
           className="w-full text-center text-xs text-[#94a3b8] hover:text-[#34d399] py-2 border-t border-white/10 transition-colors"
         >
           {showSwitchAccountInfo ? "Hide" : "Can't sign in with Cavendish account?"}
