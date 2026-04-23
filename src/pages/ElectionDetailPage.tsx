@@ -1,3 +1,4 @@
+
 import React, { useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useVoting } from "../features/voting/application/useVoting";
@@ -64,9 +65,9 @@ export default function ElectionDetailPage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500 pb-20">
       {/* Banner Image */}
       <div className="h-64 w-full rounded-3xl overflow-hidden relative border border-white/10">
-        <img 
-          src={election.coverImage || election.imageUrl || fallbackImage} 
-          alt={election.title} 
+        <img
+          src={election.coverImage || election.imageUrl || fallbackImage}
+          alt={election.title}
           className="w-full h-full object-cover opacity-40 grayscale-[0.3]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent"></div>
@@ -143,11 +144,11 @@ export default function ElectionDetailPage() {
                   {isAdmin && (
                     <label className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover/image:opacity-100 cursor-pointer transition-opacity">
                       <Camera size={20} className="text-white" />
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={(e) => handleImageUpload(e, candidate.id)} 
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e, candidate.id)}
                         disabled={updateCandidateImage.isPending}
                       />
                     </label>
@@ -159,7 +160,7 @@ export default function ElectionDetailPage() {
                 <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#22d3ee] transition-colors">{candidate.name}</h3>
                 <span className="text-xs font-bold uppercase tracking-widest text-white/30 bg-white/5 px-3 py-1 rounded-full">Candidate</span>
               </div>
-              
+
               <div className="p-6 md:w-2/3 prose prose-invert prose-emerald prose-sm max-w-none text-white/70">
                 {candidate.manifesto ? (
                   <Markdown>{candidate.manifesto}</Markdown>

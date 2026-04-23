@@ -9,6 +9,7 @@ import HistoryPage from './pages/HistoryPage';
 import LiveTrackerPage from './pages/LiveTrackerPage';
 import SecureVotingBoothPage from './pages/SecureVotingBoothPage';
 import { AppProviders } from './providers/AppProviders';
+import { AuthGate } from './providers/ClerkWrapper';
 import { useTheme } from './providers/ThemeProvider';
 
 const SignInWithAccountSwitch = () => {
@@ -145,16 +146,18 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 export default function App() {
   return (
     <AppProviders>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/election/:id" element={<ElectionDetailPage />} />
-          <Route path="/vote/:id" element={<SecureVotingBoothPage />} />
-          <Route path="/live/:id" element={<LiveTrackerPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AppLayout>
+      <AuthGate>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/election/:id" element={<ElectionDetailPage />} />
+            <Route path="/vote/:id" element={<SecureVotingBoothPage />} />
+            <Route path="/live/:id" element={<LiveTrackerPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AppLayout>
+      </AuthGate>
     </AppProviders>
   );
 }
