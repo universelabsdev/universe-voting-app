@@ -1,15 +1,13 @@
 
-import React, { useRef } from "react";
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useVoting } from "../features/voting/application/useVoting";
-import { ChevronLeft, Info, Loader2, Camera, TrendingUp } from "lucide-react";
+import { ChevronLeft, Info, Loader2, Camera } from "lucide-react";
 import Markdown from "react-markdown";
 import { useUser } from "@clerk/clerk-react";
 import { useLiveVotesSubscription } from "../features/voting/infrastructure/useLiveVotes";
-import { useApiClient } from "../api/client";
 
 export default function ElectionDetailPage() {
-  useApiClient();
   const { id } = useParams<{ id: string }>();
   const { useElectionDetails, useUpdateCandidateImage, useLiveResults } = useVoting();
   const { data: election, isLoading } = useElectionDetails(id!);

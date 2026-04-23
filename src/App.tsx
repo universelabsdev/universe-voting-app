@@ -2,6 +2,7 @@ import { SignedIn, SignedOut, UserButton, useClerk } from '@clerk/clerk-react';
 import { Award, Moon, Sun } from 'lucide-react';
 import React from 'react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { useApiClient } from './api/client';
 import { useVoting } from './features/voting/application/useVoting';
 import DashboardPage from './pages/DashboardPage';
 import ElectionDetailPage from './pages/ElectionDetailPage';
@@ -59,6 +60,7 @@ const SignInWithAccountSwitch = () => {
 };
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  useApiClient(); // Register auth interceptor once at the top level
   const { useUserProfile } = useVoting();
   const { data: profile } = useUserProfile();
   const { theme, setTheme } = useTheme();

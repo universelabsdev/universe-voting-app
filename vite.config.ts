@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
       proxy: {
-        '/api/rest/v1': {
+        '/api/v1': {
           target: 'https://universe-server-delta.vercel.app',
           changeOrigin: true,
         },

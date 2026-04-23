@@ -157,7 +157,7 @@ export const VotingApi = {
 
   // Get Feed
   getFeed: async (): Promise<FeedPost[]> => {
-    const { data } = await apiClient.get<{ success: boolean; data: FeedPost[] }>('/feed');
+    const { data } = await apiClient.get<{ success: boolean; data: FeedPost[] }>('/posts/feed');
     return data.data;
   },
 
@@ -167,7 +167,7 @@ export const VotingApi = {
     authorName?: string;
     authorImageUrl?: string;
   }): Promise<FeedPost> => {
-    const { data } = await apiClient.post<{ success: boolean; data: FeedPost }>('/feed', params);
+    const { data } = await apiClient.post<{ success: boolean; data: FeedPost }>('/posts/feed', params);
     return data.data;
   },
 };

@@ -5,12 +5,10 @@ import Markdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { useVoting } from '../features/voting/application/useVoting';
 import { Election } from '../features/voting/domain/voting.types';
-import { useApiClient } from '../api/client';
 
 export default function DashboardPage() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
-  const api = useApiClient();
   const { useElectionsList, useRegistrationStatus, useFeed, useRegisterVoter } = useVoting();
 
   const { data: elections, isLoading } = useElectionsList();
